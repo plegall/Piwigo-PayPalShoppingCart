@@ -38,7 +38,7 @@ Traduction en Anglais du Plugin Name et du nom du répertoire
 Correction du problème de compatibilité avec exif view (double affichage des boutons)
 	
 1.0.3   15/02/2011
-Ajout langue Lettone
+Add lv_LV (Latvian) thanks to Aivars Baldone
 
 */
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');

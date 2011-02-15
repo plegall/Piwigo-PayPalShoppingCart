@@ -1,4 +1,5 @@
 <?php
+// add lv_LV (Latvian) thanks to Aivars Baldone
 $lang['Action'] = 'Darbība';
 $lang['Add to cart'] = 'Ielikt grozā';
 $lang['Append photo size'] = 'Pievienot foto izmērus';
