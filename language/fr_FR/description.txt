@@ -1,0 +1,1 @@
+﻿Integration d'un panier PayPal permettant de vendre des photos en ligne
