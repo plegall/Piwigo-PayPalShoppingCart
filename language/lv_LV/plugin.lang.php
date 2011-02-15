@@ -10,11 +10,11 @@ $lang['Data deleted'] = 'Dati izdzēsta';
 $lang['Data updated'] = 'Dati atjaunināta';
 $lang['Delete data'] = 'Dzēst datus';
 $lang['Fixed shipping cost'] = 'Fiksētas piegādes izmaksas';
-$lang['PayPal shopping cart'] = 'PayPal iepirkumu grozs';
+$lang['PayPal Shopping Cart'] = 'PayPal iepirkumu grozs';
 $lang['Price'] = 'Cena';
 $lang['Shipping cost'] = 'Piegādes izmaksas';
 $lang['Size'] = 'Izmērs';
 $lang['Update data'] = 'Atjaunināt datus';
-$lang['View shopping cart'] = 'Skatīt iepirkumu grozu';
-$lang['View my PayPal shopping cart'] = 'Apskatīt savu PayPal iepirkumu grozu';
+$lang['View Shopping Cart'] = 'Skatīt iepirkumu grozu';
+$lang['View my PayPal Shopping Cart'] = 'Apskatīt savu PayPal iepirkumu grozu';
 ?>
