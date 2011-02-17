@@ -1,0 +1,1 @@
+﻿Aggiungere un carrello PayPal su Piwigo per vendere delle foto.
