@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: PayPal Shopping Cart
-Version: 1.0.4
+Version: 1.0.5
 Description: Append PayPal Shopping Cart on Piwigo to sell photos
 Plugin URI: http://piwigo.org/ext/extension_view.php?eid=499
 Author: queguineur.fr
@@ -43,13 +43,17 @@ Add lv_LV (Latvian) thanks to Aivars Baldone
 1.0.4   17/02/2011
 Add de_DE and it_IT (par Sugar888)
 
+1.0.5   27/02/2011
+Correction pb compatibilité avec certains thèmes
+Déplacement des boutons PayPal en début de table info
+
 */
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 define('PPPPP_PATH' , PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)) . '/');
 include_once (PPPPP_PATH.'/constants.php');
- 
+
 function ppppp_append_form($tpl_source, &$smarty){
- $pattern = '#</table>#';  
+ $pattern = '#<.*\"infoTable\".*>#';
  $replacement = '
   <tr>
    <td class="label">{\'Buy this picture\'|@translate}</td>
@@ -79,7 +83,6 @@ function ppppp_append_form($tpl_source, &$smarty){
     </form>
    </td>
   </tr> 
- </table>
  
  {literal}
  <script type="text/javascript">
@@ -91,6 +94,13 @@ function ppppp_append_form($tpl_source, &$smarty){
  </script>
  {/literal}
  ';
+ if(!preg_match($pattern,$tpl_source)) {
+  $pattern='#{if isset\(\$COMMENT_IMG\)}#';
+  $replacement='<table>'.$replacement.'</table>';
+  $replacement=$replacement.'$0';
+  }
+ else
+  $replacement='$0'.$replacement;
  return preg_replace($pattern, $replacement, $tpl_source,1);
  }
 
