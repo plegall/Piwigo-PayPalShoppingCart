@@ -1,0 +1,1 @@
+Pridá PayPal nákupný košík na Piwigo pre nákup fotiek
