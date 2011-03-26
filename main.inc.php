@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: PayPal Shopping Cart
-Version: 1.0.6
+Version: 1.0.7
 Description: Append PayPal Shopping Cart on Piwigo to sell photos
 Plugin URI: http://piwigo.org/ext/extension_view.php?eid=499
 Author: queguineur.fr
@@ -49,6 +49,9 @@ Déplacement des boutons PayPal en début de table info
 
 1.0.6   05/03/2011
 Add sk_SK (by dodo)
+
+1.0.7   26/03/2011
+Add hu_HU language (Hungarian) thanks to samli
 
 */
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
