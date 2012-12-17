@@ -15,7 +15,7 @@ defined('PHPWG_ROOT_PATH') or die('Hacking attempt!');
 
 function ppppp_install() 
 {
-  global $conf, $prefixeTable;
+  global $conf, $prefixeTable, $template;
 
   $tables = ppppp_get_tables();
 
@@ -78,6 +78,8 @@ CREATE TABLE IF NOT EXISTS ".$prefixeTable."ppppp_config (
   
     conf_update_param('PayPalShoppingCart', $default_config);
     $conf['PayPalShoppingCart'] = $default_config;
+
+    $template->delete_compiled_templates();
   }
 }
 

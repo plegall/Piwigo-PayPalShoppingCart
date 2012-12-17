@@ -115,6 +115,11 @@ UPDATE '.CATEGORIES_TABLE.'
 ;';
        pwg_query($query);
      }
+
+     array_push(
+       $page['infos'],
+       l10n('Your configuration settings are saved')
+       );
    }
    
    // associate to albums
