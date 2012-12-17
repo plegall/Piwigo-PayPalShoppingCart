@@ -22,7 +22,6 @@ global $template;
 include_once(PHPWG_ROOT_PATH .'admin/include/tabsheet.class.php');
 load_language('plugin.lang', PPPPP_PATH);
 $my_base_url = get_admin_plugin_menu_link(__FILE__);
-include_once (PPPPP_PATH.'/constants.php');
 
 // onglets
 if (!isset($_GET['tab']))
@@ -34,6 +33,7 @@ $tabsheet = new tabsheet();
 $tabsheet->add('currency',
                l10n('Currency'),
                $my_base_url.'&amp;tab=currency');
+$tabsheet->add('albums', l10n('Albums'), $my_base_url.'&amp;tab=albums');
 $tabsheet->add('size',
                l10n('Size'),
                $my_base_url.'&amp;tab=size');
@@ -84,6 +84,57 @@ switch($page['tab']){
   
   $template->assign('ppppp_array_currency',$array_currency);
   break;
+
+ case 'albums' :
+
+   if (isset($_POST['apply_to_albums']) and in_array($_POST['apply_to_albums'], array('all', 'list')))
+   {
+     $conf['PayPalShoppingCart']['apply_to_albums'] = $_POST['apply_to_albums'];
+     conf_update_param('PayPalShoppingCart', serialize($conf['PayPalShoppingCart']));
+
+     if ($_POST['apply_to_albums'] == 'list')
+     {
+       check_input_parameter('albums', $_POST, true, PATTERN_ID);
+
+       if (empty($_POST['albums']))
+       {
+         $_POST['albums'][] = -1;
+       }
+       
+       $query = '
+UPDATE '.CATEGORIES_TABLE.'
+  SET paypal_active = \'false\'
+  WHERE id NOT IN ('.implode(',', $_POST['albums']).')
+;';
+       pwg_query($query);
+
+       $query = '
+UPDATE '.CATEGORIES_TABLE.'
+  SET paypal_active = \'true\'
+  WHERE id IN ('.implode(',', $_POST['albums']).')
+;';
+       pwg_query($query);
+     }
+   }
+   
+   // associate to albums
+   $query = '
+SELECT id
+  FROM '.CATEGORIES_TABLE.'
+  WHERE paypal_active = \'true\'
+;';
+   $paypal_albums = array_from_query($query, 'id');
+
+   $query = '
+SELECT id,name,uppercats,global_rank
+  FROM '.CATEGORIES_TABLE.'
+;';
+   display_select_cat_wrapper($query, $paypal_albums, 'album_options');
+
+   $template->assign('apply_to_albums', $conf['PayPalShoppingCart']['apply_to_albums']);
+
+   break;
+  
  
  case 'size':
   if(isset($_POST['delete'])and is_numeric($_POST['delete'])){

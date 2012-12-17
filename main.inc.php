@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: PayPal Shopping Cart
-Version: 1.0.7
+Version: auto
 Description: Append PayPal Shopping Cart on Piwigo to sell photos
 Plugin URI: http://piwigo.org/ext/extension_view.php?eid=499
 Author: queguineur.fr
@@ -55,8 +55,19 @@ Add hu_HU language (Hungarian) thanks to samli
 
 */
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
+
+global $prefixeTable;
+
+// +-----------------------------------------------------------------------+
+// | Define plugin constants                                               |
+// +-----------------------------------------------------------------------+
+
+defined('PPPPP_ID') or define('PPPPP_ID', basename(dirname(__FILE__)));
 define('PPPPP_PATH' , PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)) . '/');
-include_once (PPPPP_PATH.'/constants.php');
+define('PPPPP_SIZE_TABLE', $prefixeTable.'ppppp_size');
+define('PPPPP_CONFIG_TABLE', $prefixeTable.'ppppp_config');
+define('PPPPP_VERSION', 'auto');
+
 
 function ppppp_append_form($tpl_source, &$smarty){
  $pattern = '#<.*\"infoTable\".*>#';
@@ -111,7 +122,29 @@ function ppppp_append_form($tpl_source, &$smarty){
  }
 
 function ppppp_picture_handler(){
- global $template;
+  global $template, $conf, $page;
+
+  if ($conf['PayPalShoppingCart']['apply_to_albums'] == 'list')
+  {
+    if (!isset($page['category']))
+    {
+      return;
+    }
+
+    $query = '
+SELECT
+    paypal_active
+  FROM '.CATEGORIES_TABLE.'
+  WHERE id = '.$page['category']['id'].'
+;';
+    list($paypal_active) = pwg_db_fetch_row(pwg_query($query));
+
+    if ('false' == $paypal_active)
+    {
+      return;
+    }
+  }   
+ 
  $template->set_prefilter('picture', 'ppppp_append_form');
  load_language('plugin.lang', PPPPP_PATH);
  $query='SELECT * FROM '.PPPPP_SIZE_TABLE.';';
@@ -129,7 +162,6 @@ function ppppp_picture_handler(){
  $template->assign('ppppp_currency',$row[0]);
  
  $template->assign('ppppp_e_mail',get_webmaster_mail_address());
- $template->append('footer_elements',' - PayPal plugin by <a href=http://www.queguineur.fr>queguineur.fr</a>');
  }
 
 add_event_handler('loc_begin_picture', 'ppppp_picture_handler');
@@ -168,4 +200,51 @@ function ppppp_admin_menu($menu){
  }
 
 add_event_handler('get_admin_plugin_menu_links', 'ppppp_admin_menu');
+
+add_event_handler('init', 'ppppp_init');
+/**
+ * plugin initialization
+ *   - check for upgrades
+ *   - unserialize configuration
+ *   - load language
+ */
+function ppppp_init()
+{
+  global $conf, $pwg_loaded_plugins;
+  
+  // apply upgrade if needed
+  if (
+    PPPPP_VERSION == 'auto' or
+    $pwg_loaded_plugins[PPPPP_ID]['version'] == 'auto' or
+    version_compare($pwg_loaded_plugins[PPPPP_ID]['version'], PPPPP_VERSION, '<')
+  )
+  {
+    // call install function
+    include_once(PPPPP_PATH.'include/install.inc.php');
+    ppppp_install();
+    
+    // update plugin version in database
+    if ( $pwg_loaded_plugins[PPPPP_ID]['version'] != 'auto' and PPPPP_VERSION != 'auto' )
+    {
+      $query = '
+UPDATE '. PLUGINS_TABLE .'
+SET version = "'. PPPPP_VERSION .'"
+WHERE id = "'. PPPPP_ID .'"';
+      pwg_query($query);
+      
+      $pwg_loaded_plugins[PPPPP_ID]['version'] = PPPPP_VERSION;
+      
+      if (defined('IN_ADMIN'))
+      {
+        $_SESSION['page_infos'][] = 'PayPalShoppingCart plugin updated to version '. PPPPP_VERSION;
+      }
+    }
+  }
+  
+  // load plugin language file
+  load_language('plugin.lang', PPPPP_PATH);
+  
+  // prepare plugin configuration
+  $conf['PayPalShoppingCart'] = unserialize($conf['PayPalShoppingCart']);
+}
 ?>

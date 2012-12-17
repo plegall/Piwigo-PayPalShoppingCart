@@ -20,41 +20,60 @@
 
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
-if (!defined("PPPPP_PATH")){
-  define('PPPPP_PATH', PHPWG_PLUGINS_PATH.basename(dirname(__FILE__)));
+defined('PPPPP_ID') or define('PPPPP_ID', basename(dirname(__FILE__)));
+include_once(PHPWG_PLUGINS_PATH.PPPPP_ID.'/include/install.inc.php');
+
+/**
+ * plugin installation
+ *
+ * perform here all needed step for the plugin installation
+ * such as create default config, add database tables, 
+ * add fields to existing tables, create local folders...
+ */
+function plugin_install() 
+{
+  ppppp_install();
+  define('ppppp_installed', true);
 }
-include_once (PPPPP_PATH.'/constants.php');
 
-function plugin_install(){
- global $prefixeTable;
- $query = "CREATE TABLE IF NOT EXISTS ".PPPPP_SIZE_TABLE." (
-  id tinyint(4) NOT NULL AUTO_INCREMENT,
-  size varchar(40) NOT NULL,
-  price float NOT NULL,
-  PRIMARY KEY (id),
-  UNIQUE KEY size (size)
-  );";
- pwg_query($query);
- $query = "INSERT INTO ".PPPPP_SIZE_TABLE." (size,price) VALUES ('Classique', '40');";
- pwg_query($query);
+/**
+ * plugin activation
+ *
+ * this function is triggered adter installation, by manual activation
+ * or after a plugin update
+ * for this last case you must manage updates tasks of your plugin in this function
+ */
+function plugin_activate()
+{
+  if (!defined('ppppp_installed')) // a plugin is activated just after its installation
+  {
+    ppppp_install();
+  }
+}
+
+/**
+ * plugin unactivation
+ *
+ * triggered before uninstallation or by manual unactivation
+ */
+function plugin_unactivate()
+{
+}
+
+function plugin_uninstall()
+{
+  global $prefixeTable;
  
- $query = "CREATE TABLE IF NOT EXISTS ".PPPPP_CONFIG_TABLE." (
-  param varchar(40) NOT NULL,
-  value text NOT NULL,
-  PRIMARY KEY (param)
-  );";
- pwg_query($query);
- $query = "INSERT INTO ".PPPPP_CONFIG_TABLE." VALUES ('fixed_shipping', '0');";
- pwg_query($query);
- $query = "INSERT INTO ".PPPPP_CONFIG_TABLE." VALUES ('currency', 'EUR');";
- pwg_query($query);
- }
+  $query = "DROP TABLE ".$prefixeTable."ppppp_size;";
+  pwg_query($query);
+  
+  $query = "DROP TABLE ".$prefixeTable."ppppp_config;"; 
+  pwg_query($query);
 
-function plugin_uninstall(){
- global $prefixeTable;
- $query = "DROP TABLE ".PPPPP_SIZE_TABLE.";";
- pwg_query($query);
- $query = "DROP TABLE ".PPPPP_CONFIG_TABLE.";"; 
- pwg_query($query);
+  // delete configuration
+  pwg_query('DELETE FROM `'. CONFIG_TABLE .'` WHERE param = "PayPalShoppingCart";');
+  
+  // delete field
+  pwg_query('ALTER TABLE `'. CATEGORIES_TABLE .'` DROP COLUMN paypal_active;');
 }
 ?>
