@@ -1,0 +1,1 @@
+Tilføj PayPal Shopping Cart til Piwigo for at kunne sælge billeder.
