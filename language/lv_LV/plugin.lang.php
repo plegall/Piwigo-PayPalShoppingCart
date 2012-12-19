@@ -18,4 +18,7 @@ $lang['Size'] = 'Izmērs';
 $lang['Update data'] = 'Atjaunināt datus';
 $lang['View Shopping Cart'] = 'Skatīt iepirkumu grozu';
 $lang['View my PayPal Shopping Cart'] = 'Apskatīt savu PayPal iepirkumu grozu';
+$lang['all albums'] = 'visi albūmi';
+$lang['a list of albums'] = 'albūmu saraksts';
+$lang['Apply to albums'] = 'Pielietot albūmiem';
 ?>
