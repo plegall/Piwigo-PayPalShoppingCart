@@ -35,4 +35,7 @@ $lang['Size'] = 'Grösse';
 $lang['Update data'] = 'Daten aktualisieren';
 $lang['View Shopping Cart'] = 'Einkaufswagen ansehen';
 $lang['View my PayPal Shopping Cart'] = 'Mein Paypal Einkaufswagen ansehen';
+$lang['Apply to albums'] = 'zu Alben hinzufügen';
+$lang['a list of albums'] = 'eine Liste von Alben';
+$lang['all albums'] = 'alle Alben';
 ?>
