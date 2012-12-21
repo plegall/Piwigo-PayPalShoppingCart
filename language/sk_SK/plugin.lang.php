@@ -35,4 +35,7 @@ $lang['Size'] = 'Veľkosť';
 $lang['Update data'] = 'Aktualizovať údaje';
 $lang['View Shopping Cart'] = 'Ukázať nákupný košík';
 $lang['View my PayPal Shopping Cart'] = 'Ukázať môj nákupný košík';
+$lang['all albums'] = 'všetky albumy';
+$lang['a list of albums'] = 'zoznam albumov';
+$lang['Apply to albums'] = 'Pridať do albumov';
 ?>
