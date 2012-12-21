@@ -35,4 +35,7 @@ $lang['Size'] = 'Méret';
 $lang['Update data'] = 'Adatok frissítése';
 $lang['View Shopping Cart'] = 'Shopping Cart megtekintése';
 $lang['View my PayPal Shopping Cart'] = 'Nézze meg a PayPal Shopping Cart-ot';
+$lang['Apply to albums'] = 'Albumokra alkalmazás';
+$lang['a list of albums'] = 'albumok listája';
+$lang['all albums'] = 'összes album';
 ?>
