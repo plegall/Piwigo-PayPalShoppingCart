@@ -147,7 +147,7 @@ SELECT
  
  $template->set_prefilter('picture', 'ppppp_append_form');
  load_language('plugin.lang', PPPPP_PATH);
- $query='SELECT * FROM '.PPPPP_SIZE_TABLE.';';
+ $query='SELECT * FROM '.PPPPP_SIZE_TABLE.' '.@$conf['PayPalShoppingCart_sizes_order_by'].';';
  $result = pwg_query($query);
  while($row = mysql_fetch_array($result)){
   $template->append('ppppp_array_size',$row);
