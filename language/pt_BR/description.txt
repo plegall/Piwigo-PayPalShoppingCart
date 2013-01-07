@@ -1,0 +1,2 @@
+Anexa um carrinho de compras PayPal no Piwigo para venda de fotos
+
