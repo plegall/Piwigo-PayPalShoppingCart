@@ -40,4 +40,5 @@ $lang['Size'] = 'Rozmiar';
 $lang['Update data'] = 'Aktualizuj dane';
 $lang['View Shopping Cart'] = 'Pokaż koszyk z zakupami';
 $lang['View my PayPal Shopping Cart'] = 'Pokaż mój koszyk z zakupami PayPal';
+$lang['Fixed shipping cost'] = 'Stały koszt dostawy';
 ?>
