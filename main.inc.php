@@ -149,16 +149,16 @@ SELECT
  load_language('plugin.lang', PPPPP_PATH);
  $query='SELECT * FROM '.PPPPP_SIZE_TABLE.' '.@$conf['PayPalShoppingCart_sizes_order_by'].';';
  $result = pwg_query($query);
- while($row = mysql_fetch_array($result)){
+ while($row = pwg_db_fetch_assoc($result)){
   $template->append('ppppp_array_size',$row);
   }
  $query='SELECT value FROM '.PPPPP_CONFIG_TABLE.' WHERE param = \'fixed_shipping\';';
  $result = pwg_query($query);
- $row = mysql_fetch_array($result);
+ $row = pwg_db_fetch_row($result);
  $template->assign('ppppp_fixed_shipping',$row[0]); 
  $query='SELECT value FROM '.PPPPP_CONFIG_TABLE.' WHERE param = \'currency\';';
  $result = pwg_query($query);
- $row = mysql_fetch_array($result);
+ $row = pwg_db_fetch_row($result);
  $template->assign('ppppp_currency',$row[0]);
  
  $template->assign('ppppp_e_mail',get_webmaster_mail_address());

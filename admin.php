@@ -79,7 +79,7 @@ switch($page['tab']){
  
   $query='SELECT value FROM '.PPPPP_CONFIG_TABLE.' WHERE param = \'currency\';';
   $result = pwg_query($query);
-  $row = mysql_fetch_array($result);
+  $row = pwg_db_fetch_row($result);
   $template->assign('ppppp_currency',$row[0]);
   
   $template->assign('ppppp_array_currency',$array_currency);
@@ -160,7 +160,7 @@ SELECT id,name,uppercats,global_rank
   }
   $query='SELECT * FROM '.PPPPP_SIZE_TABLE.';';
   $result = pwg_query($query);
-  while($row = mysql_fetch_array($result)){
+  while($row = pwg_db_fetch_assoc($result)){
    $template->append('ppppp_array_size',$row);
   }
   break;
@@ -174,7 +174,7 @@ SELECT id,name,uppercats,global_rank
    }
   $query='SELECT value FROM '.PPPPP_CONFIG_TABLE.' WHERE param = \'fixed_shipping\';';
   $result = pwg_query($query);
-  $row = mysql_fetch_array($result);
+  $row = pwg_db_fetch_row($result);
   $template->assign('ppppp_fixed_shipping',$row[0]);
   break;
  }
