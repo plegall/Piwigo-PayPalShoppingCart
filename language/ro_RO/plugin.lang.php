@@ -33,4 +33,12 @@ $lang['Shipping cost'] = 'Costuri de expediere';
 $lang['View Shopping Cart'] = 'Vizualizează coșul de cumpărături';
 $lang['View my PayPal Shopping Cart'] = 'Vizualizează coșul de cumpărături PayPal';
 $lang['a list of albums'] = 'o listă de albume';
+$lang['Append data'] = 'Anexază dată';
+$lang['Append photo size'] = 'Anexează dimensiunile fotografiei';
+$lang['Data appened'] = 'Dată anexată';
+$lang['Data deleted'] = 'Dată ștearsă';
+$lang['Data updated'] = 'Dată actualizată';
+$lang['Delete data'] = 'Dată ștearsă';
+$lang['Size'] = 'Dimensiune';
+$lang['Update data'] = 'Actualizează dată';
 ?>
