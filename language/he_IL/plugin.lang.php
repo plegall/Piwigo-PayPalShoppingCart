@@ -17,25 +17,25 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-$lang['Action']  = 'פעולה';
-$lang['Add to cart']  =   'הוסף לסל';
-$lang['Append photo size']  =   'צרף גודל תמונה ';
-$lang['Append data']  =   'צירוף נתונים ';
-$lang['Buy this picture']  =   'קנה תמונה זו';
-$lang['Currency']  =   'מטבע';
-$lang['Data appened']  =   'הנתונים צורפו';
-$lang['Data deleted']  =   'הנתונים נמחקו';
-$lang['Data updated']  =   'הנתונים עודכנו';
-$lang['Delete data']  =   'מחיקת נתונים';
-$lang['Fixed shipping cost']  =   'עלות משלוח קבועה';
-$lang['PayPal Shopping Cart']  =   'סל קניות PayPal ';
-$lang['Price']  =   'המחיר';
-$lang['Shipping cost']  =   'עלות משלוח';
-$lang['Size']  =   'גודל';
-$lang['Update data']  =   'עדכון נתונים';
-$lang['View Shopping Cart']  =   'סל קניות';
-$lang['View my PayPal Shopping Cart']  =   'צפה בסל קניות PayPal שלי ';
-$lang['Apply to albums']  =   'החל על אלבומים ';
-$lang['all albums']  =   'כל האלבומים';
-$lang['a list of albums']  =   'רשימת האלבומים';
+$lang['Action']='פעולה';
+$lang['Add to cart']='הוסף לסל';
+$lang['Append photo size']= 'צרף גודל תמונה';
+$lang['Append data']='צירוף נתונים';
+$lang['Buy this picture']='קנה תמונה זו';
+$lang['Currency']='מטבע';
+$lang['Data appened']='הנתונים צורפו';
+$lang['Data deleted']='הנתונים נמחקו';
+$lang['Data updated']='הנתונים עודכנו';
+$lang['Delete data']='מחיקת נתונים';
+$lang['Fixed shipping cost']='עלות משלוח קבועה';
+$lang['PayPal Shopping Cart']='סל קניות PayPal';
+$lang['Price']='המחיר';
+$lang['Shipping cost']='עלות משלוח';
+$lang['Size']='גודל';
+$lang['Update data']='עדכון נתונים';
+$lang['View Shopping Cart']='סל קניות';
+$lang['View my PayPal Shopping Cart']='צפה בסל קניות PayPal שלי';
+$lang['Apply to albums']='החל על אלבומים';
+$lang['all albums']='כל האלבומים';
+$lang['a list of albums']='רשימת האלבומים';
 ?>
