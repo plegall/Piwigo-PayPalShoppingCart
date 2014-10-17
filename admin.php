@@ -43,141 +43,151 @@ $tabsheet->add('shipping',
 $tabsheet->select($page['tab']);
 $tabsheet->assign();
 
-switch($page['tab']){
- case 'currency':
-  $array_currency=array(
-  'AUD'=>'Australian Dollar',
-  'BRL'=>'Brazilian Real',
-  'CAD'=>'Canadian Dollar',
-  'CZK'=>'Czech Koruna',
-  'DKK'=>'Danish Krone',
-  'EUR'=>'Euro',
-  'HKD'=>'Hong Kong Dollar',
-  'HUF'=>'Hungarian Forint',
-  'ILS'=>'Israeli New Sheqel',
-  'JPY'=>'Japanese Yen',
-  'MYR'=>'Malaysian Ringgit',
-  'MXN'=>'Mexican Peso',
-  'NOK'=>'Norwegian Krone',
-  'NZD'=>'New Zealand Dollar',
-  'PHP'=>'Philippine Peso',
-  'PLN'=>'Polish Zloty',
-  'GBP'=>'Pound Sterling',
-  'SGD'=>'Singapore Dollar',
-  'SEK'=>'Swedish Krona',
-  'CHF'=>'Swiss Franc',
-  'TWD'=>'Taiwan New Dollar',
-  'THB'=>'Thai Baht',
-  'USD'=>'U.S. Dollar'
-  );
-  if(isset($_POST['currency'])){
-   $currency=$_POST['currency'];
-   $query='UPDATE '.PPPPP_CONFIG_TABLE.' SET value = \''.$currency.'\' WHERE param = \'currency\';';
-   pwg_query($query);
-   $page['infos']=l10n('Data updated');
-   }
- 
-  $query='SELECT value FROM '.PPPPP_CONFIG_TABLE.' WHERE param = \'currency\';';
-  $result = pwg_query($query);
-  $row = pwg_db_fetch_row($result);
-  $template->assign('ppppp_currency',$row[0]);
+switch($page['tab'])
+{
+  case 'currency':
+    
+    $array_currency = array(
+      'AUD'=>'Australian Dollar',
+      'BRL'=>'Brazilian Real',
+      'CAD'=>'Canadian Dollar',
+      'CZK'=>'Czech Koruna',
+      'DKK'=>'Danish Krone',
+      'EUR'=>'Euro',
+      'HKD'=>'Hong Kong Dollar',
+      'HUF'=>'Hungarian Forint',
+      'ILS'=>'Israeli New Sheqel',
+      'JPY'=>'Japanese Yen',
+      'MYR'=>'Malaysian Ringgit',
+      'MXN'=>'Mexican Peso',
+      'NOK'=>'Norwegian Krone',
+      'NZD'=>'New Zealand Dollar',
+      'PHP'=>'Philippine Peso',
+      'PLN'=>'Polish Zloty',
+      'GBP'=>'Pound Sterling',
+      'SGD'=>'Singapore Dollar',
+      'SEK'=>'Swedish Krona',
+      'CHF'=>'Swiss Franc',
+      'TWD'=>'Taiwan New Dollar',
+      'THB'=>'Thai Baht',
+      'USD'=>'U.S. Dollar'
+      );
   
-  $template->assign('ppppp_array_currency',$array_currency);
-  break;
+    if(isset($_POST['currency']) and isset($array_currency[ $_POST['currency'] ]))
+    {
+      $conf['PayPalShoppingCart']['currency'] = $_POST['currency'];
+      conf_update_param('PayPalShoppingCart', $conf['PayPalShoppingCart']);
+      
+      $page['infos'][] = l10n('Your configuration settings are saved');
+    }
+ 
+    $template->assign(
+      array(
+        'ppppp_currency' => $conf['PayPalShoppingCart']['currency'],
+        'ppppp_array_currency' => $array_currency,
+        )
+      );
+    
+    break;
 
- case 'albums' :
+   case 'albums' :
 
-   if (isset($_POST['apply_to_albums']) and in_array($_POST['apply_to_albums'], array('all', 'list')))
-   {
-     $conf['PayPalShoppingCart']['apply_to_albums'] = $_POST['apply_to_albums'];
-     conf_update_param('PayPalShoppingCart', serialize($conf['PayPalShoppingCart']));
-
-     if ($_POST['apply_to_albums'] == 'list')
+     if (isset($_POST['apply_to_albums']) and in_array($_POST['apply_to_albums'], array('all', 'list')))
      {
-       check_input_parameter('albums', $_POST, true, PATTERN_ID);
+       $conf['PayPalShoppingCart']['apply_to_albums'] = $_POST['apply_to_albums'];
+       conf_update_param('PayPalShoppingCart', $conf['PayPalShoppingCart']);
 
-       if (empty($_POST['albums']))
+       if ($_POST['apply_to_albums'] == 'list')
        {
-         $_POST['albums'][] = -1;
-       }
+         check_input_parameter('albums', $_POST, true, PATTERN_ID);
+
+         if (empty($_POST['albums']))
+         {
+           $_POST['albums'][] = -1;
+         }
        
-       $query = '
+         $query = '
 UPDATE '.CATEGORIES_TABLE.'
   SET paypal_active = \'false\'
   WHERE id NOT IN ('.implode(',', $_POST['albums']).')
 ;';
-       pwg_query($query);
+         pwg_query($query);
 
-       $query = '
+         $query = '
 UPDATE '.CATEGORIES_TABLE.'
   SET paypal_active = \'true\'
   WHERE id IN ('.implode(',', $_POST['albums']).')
 ;';
-       pwg_query($query);
-     }
+         pwg_query($query);
+       }
 
-     array_push(
-       $page['infos'],
-       l10n('Your configuration settings are saved')
-       );
-   }
+       $page['infos'][] = l10n('Your configuration settings are saved');
+     }
    
-   // associate to albums
-   $query = '
+     // associate to albums
+     $query = '
 SELECT id
   FROM '.CATEGORIES_TABLE.'
   WHERE paypal_active = \'true\'
 ;';
-   $paypal_albums = array_from_query($query, 'id');
+     $paypal_albums = array_from_query($query, 'id');
 
-   $query = '
+     $query = '
 SELECT id,name,uppercats,global_rank
   FROM '.CATEGORIES_TABLE.'
 ;';
-   display_select_cat_wrapper($query, $paypal_albums, 'album_options');
+     display_select_cat_wrapper($query, $paypal_albums, 'album_options');
 
-   $template->assign('apply_to_albums', $conf['PayPalShoppingCart']['apply_to_albums']);
+     $template->assign('apply_to_albums', $conf['PayPalShoppingCart']['apply_to_albums']);
 
-   break;
+     break;
   
  
- case 'size':
-  if(isset($_POST['delete'])and is_numeric($_POST['delete'])){
-   $delete_id=$_POST['delete'];
-   $query='DELETE FROM '.PPPPP_SIZE_TABLE.' WHERE id = '.$delete_id.';';
-   pwg_query($query);
-   $page['infos']=l10n('Data deleted');
-   }
-  else if (isset($_POST['size'])and isset($_POST['price'])and is_numeric($_POST['price'])){
-   $size=$_POST['size'];
-   $price=$_POST['price'];
-   $query='INSERT into '.PPPPP_SIZE_TABLE.' (size,price) values (\''.$size.'\',\''.$price.'\');';
-   @$res=pwg_query($query);
-   if($res==1)
-    $page['infos']=l10n('Data appened');
-   else
-    $page['errors']=l10n('Error');
-  }
-  $query='SELECT * FROM '.PPPPP_SIZE_TABLE.';';
-  $result = pwg_query($query);
-  while($row = pwg_db_fetch_assoc($result)){
-   $template->append('ppppp_array_size',$row);
-  }
-  break;
+  case 'size':
+    
+    if (isset($_POST['delete']))
+    {
+      check_input_parameter('delete', $_POST, false, PATTERN_ID);
+      
+      pwg_query('DELETE FROM '.PPPPP_SIZE_TABLE.' WHERE id = '.$_POST['delete'].';');
 
- case 'shipping':
-  if(isset($_POST['fixed_shipping'])and is_numeric($_POST['fixed_shipping'])){
-   $fixed_shipping=$_POST['fixed_shipping'];
-   $query='UPDATE '.PPPPP_CONFIG_TABLE.' SET value = \''.$fixed_shipping.'\' WHERE param = \'fixed_shipping\';';
-   pwg_query($query);
-   $page['infos']=l10n('Data updated');
-   }
-  $query='SELECT value FROM '.PPPPP_CONFIG_TABLE.' WHERE param = \'fixed_shipping\';';
-  $result = pwg_query($query);
-  $row = pwg_db_fetch_row($result);
-  $template->assign('ppppp_fixed_shipping',$row[0]);
-  break;
- }
+      $page['infos'][] = l10n('Your configuration settings are saved');
+    }
+    else if (isset($_POST['size']) and isset($_POST['price']))
+    {
+      single_insert(
+        PPPPP_SIZE_TABLE,
+        array(
+          'size' => pwg_db_real_escape_string($_POST['size']),
+          'price' => pwg_db_real_escape_string($_POST['price']),
+          )
+        );
+
+      $page['infos'][] = l10n('Your configuration settings are saved');
+    }
+    
+    $query='SELECT * FROM '.PPPPP_SIZE_TABLE.';';
+    $result = pwg_query($query);
+    while($row = pwg_db_fetch_assoc($result))
+    {
+      $template->append('ppppp_array_size',$row);
+    }
+    
+    break;
+
+  case 'shipping':
+    
+    if (isset($_POST['fixed_shipping'])and is_numeric($_POST['fixed_shipping']))
+    {
+      $conf['PayPalShoppingCart']['fixed_shipping'] = $_POST['fixed_shipping'];
+      conf_update_param('PayPalShoppingCart', $conf['PayPalShoppingCart']);
+      
+      $page['infos'][] = l10n('Your configuration settings are saved');
+    }
+    
+    $template->assign('ppppp_fixed_shipping', $conf['PayPalShoppingCart']['fixed_shipping']);
+    break;
+}
 
 $template->set_filenames(array('plugin_admin_content' => dirname(__FILE__) . '/admin.tpl')); 
 $template->assign_var_from_handle('ADMIN_CONTENT', 'plugin_admin_content');

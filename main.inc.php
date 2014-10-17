@@ -65,9 +65,6 @@ global $prefixeTable;
 defined('PPPPP_ID') or define('PPPPP_ID', basename(dirname(__FILE__)));
 define('PPPPP_PATH' , PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)) . '/');
 define('PPPPP_SIZE_TABLE', $prefixeTable.'ppppp_size');
-define('PPPPP_CONFIG_TABLE', $prefixeTable.'ppppp_config');
-define('PPPPP_VERSION', 'auto');
-
 
 function ppppp_append_form($tpl_source, &$smarty){
  $pattern = '#<.*\"infoTable\".*>#';
@@ -121,7 +118,8 @@ function ppppp_append_form($tpl_source, &$smarty){
  return preg_replace($pattern, $replacement, $tpl_source,1);
  }
 
-function ppppp_picture_handler(){
+function ppppp_picture_handler()
+{
   global $template, $conf, $page;
 
   if ($conf['PayPalShoppingCart']['apply_to_albums'] == 'list')
@@ -145,24 +143,24 @@ SELECT
     }
   }   
  
- $template->set_prefilter('picture', 'ppppp_append_form');
- load_language('plugin.lang', PPPPP_PATH);
- $query='SELECT * FROM '.PPPPP_SIZE_TABLE.' '.@$conf['PayPalShoppingCart_sizes_order_by'].';';
- $result = pwg_query($query);
- while($row = pwg_db_fetch_assoc($result)){
-  $template->append('ppppp_array_size',$row);
+  $template->set_prefilter('picture', 'ppppp_append_form');
+  load_language('plugin.lang', PPPPP_PATH);
+  
+  $query='SELECT * FROM '.PPPPP_SIZE_TABLE.' '.@$conf['PayPalShoppingCart_sizes_order_by'].';';
+  $result = pwg_query($query);
+  while($row = pwg_db_fetch_assoc($result))
+  {
+    $template->append('ppppp_array_size',$row);
   }
- $query='SELECT value FROM '.PPPPP_CONFIG_TABLE.' WHERE param = \'fixed_shipping\';';
- $result = pwg_query($query);
- $row = pwg_db_fetch_row($result);
- $template->assign('ppppp_fixed_shipping',$row[0]); 
- $query='SELECT value FROM '.PPPPP_CONFIG_TABLE.' WHERE param = \'currency\';';
- $result = pwg_query($query);
- $row = pwg_db_fetch_row($result);
- $template->assign('ppppp_currency',$row[0]);
- 
- $template->assign('ppppp_e_mail',get_webmaster_mail_address());
- }
+
+  $template->assign(
+    array(
+      'ppppp_fixed_shipping' => $conf['PayPalShoppingCart']['fixed_shipping'],
+      'ppppp_currency' => $conf['PayPalShoppingCart']['currency'],
+      'ppppp_e_mail' => get_webmaster_mail_address(),
+     )
+    );
+}
 
 add_event_handler('loc_begin_picture', 'ppppp_picture_handler');
 
@@ -204,47 +202,17 @@ add_event_handler('get_admin_plugin_menu_links', 'ppppp_admin_menu');
 add_event_handler('init', 'ppppp_init');
 /**
  * plugin initialization
- *   - check for upgrades
  *   - unserialize configuration
  *   - load language
  */
 function ppppp_init()
 {
-  global $conf, $pwg_loaded_plugins;
-  
-  // apply upgrade if needed
-  if (
-    PPPPP_VERSION == 'auto' or
-    $pwg_loaded_plugins[PPPPP_ID]['version'] == 'auto' or
-    version_compare($pwg_loaded_plugins[PPPPP_ID]['version'], PPPPP_VERSION, '<')
-  )
-  {
-    // call install function
-    include_once(PPPPP_PATH.'include/install.inc.php');
-    ppppp_install();
-    
-    // update plugin version in database
-    if ( $pwg_loaded_plugins[PPPPP_ID]['version'] != 'auto' and PPPPP_VERSION != 'auto' )
-    {
-      $query = '
-UPDATE '. PLUGINS_TABLE .'
-SET version = "'. PPPPP_VERSION .'"
-WHERE id = "'. PPPPP_ID .'"';
-      pwg_query($query);
-      
-      $pwg_loaded_plugins[PPPPP_ID]['version'] = PPPPP_VERSION;
-      
-      if (defined('IN_ADMIN'))
-      {
-        $_SESSION['page_infos'][] = 'PayPalShoppingCart plugin updated to version '. PPPPP_VERSION;
-      }
-    }
-  }
+  global $conf;
   
   // load plugin language file
   load_language('plugin.lang', PPPPP_PATH);
   
   // prepare plugin configuration
-  $conf['PayPalShoppingCart'] = unserialize($conf['PayPalShoppingCart']);
+  $conf['PayPalShoppingCart'] = safe_unserialize($conf['PayPalShoppingCart']);
 }
 ?>
