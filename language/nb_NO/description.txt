@@ -1,0 +1,1 @@
+Legg til PayPal handlekurv på Piwigo for å selge bilder
