@@ -65,10 +65,14 @@ global $prefixeTable;
 defined('PPPPP_ID') or define('PPPPP_ID', basename(dirname(__FILE__)));
 define('PPPPP_PATH' , PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)) . '/');
 define('PPPPP_SIZE_TABLE', $prefixeTable.'ppppp_size');
+define('PPPPP_VERSION', 'auto');
 
-function ppppp_append_form($tpl_source, &$smarty){
- $pattern = '#<.*\"infoTable\".*>#';
- $replacement = '
+function ppppp_append_form($tpl_source, &$smarty)
+{
+  global $theme;
+
+  $pattern = '#<.*\"infoTable\".*>#';
+  $replacement = '
   <tr>
    <td class="label">{\'Buy this picture\'|@translate}</td>
    <td>
@@ -108,15 +112,31 @@ function ppppp_append_form($tpl_source, &$smarty){
  </script>
  {/literal}
  ';
- if(!preg_match($pattern,$tpl_source)) {
-  $pattern='#{if isset\(\$COMMENT_IMG\)}#';
-  $replacement='<table>'.$replacement.'</table>';
-  $replacement=$replacement.'$0';
+
+  if (strpos($theme, 'stripped') === 0)
+  {
+    $pattern = '#</div>\s*<!--\s*theImage\s*-->#';
+    $replacement = '
+{combine_css path="plugins/PayPalShoppingCart/stripped.css"}
+<table id="paypalCart">'.$replacement.'</table>';
+    $replacement = $replacement.'$0';
   }
- else
-  $replacement='$0'.$replacement;
- return preg_replace($pattern, $replacement, $tpl_source,1);
- }
+  else
+  {
+    if(!preg_match($pattern,$tpl_source))
+    {
+      $pattern='#{if isset\(\$COMMENT_IMG\)}#';
+      $replacement='<table>'.$replacement.'</table>';
+      $replacement=$replacement.'$0';
+    }
+    else
+    {
+      $replacement='$0'.$replacement;
+    }
+  }
+  
+  return preg_replace($pattern, $replacement, $tpl_source,1);
+}
 
 function ppppp_picture_handler()
 {
