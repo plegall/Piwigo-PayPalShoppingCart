@@ -142,26 +142,10 @@ function ppppp_picture_handler()
 {
   global $template, $conf, $page;
 
-  if ($conf['PayPalShoppingCart']['apply_to_albums'] == 'list')
+  if (!ppppp_is_paypal_active())
   {
-    if (!isset($page['category']))
-    {
-      return;
-    }
-
-    $query = '
-SELECT
-    paypal_active
-  FROM '.CATEGORIES_TABLE.'
-  WHERE id = '.$page['category']['id'].'
-;';
-    list($paypal_active) = pwg_db_fetch_row(pwg_query($query));
-
-    if ('false' == $paypal_active)
-    {
-      return;
-    }
-  }   
+    return;
+  }
  
   $template->set_prefilter('picture', 'ppppp_append_form');
   load_language('plugin.lang', PPPPP_PATH);
@@ -234,5 +218,45 @@ function ppppp_init()
   
   // prepare plugin configuration
   $conf['PayPalShoppingCart'] = safe_unserialize($conf['PayPalShoppingCart']);
+}
+
+// add_event_handler('loc_end_index_thumbnails', 'ppppp_loc_end_index_thumbnails');
+add_event_handler('loc_begin_index', 'ppppp_lightbox_exception');
+function ppppp_lightbox_exception()
+{
+  if (!ppppp_is_paypal_active())
+  {
+    return;
+  }
+  
+  remove_event_handler('loc_end_index_thumbnails', 'lightbox_plugin', 40);
+}
+
+function ppppp_is_paypal_active()
+{
+  global $conf, $page;
+
+  if ($conf['PayPalShoppingCart']['apply_to_albums'] == 'list')
+  {
+    if (!isset($page['category']))
+    {
+      return false;
+    }
+
+    $query = '
+SELECT
+    paypal_active
+  FROM '.CATEGORIES_TABLE.'
+  WHERE id = '.$page['category']['id'].'
+;';
+    list($paypal_active) = pwg_db_fetch_row(pwg_query($query));
+
+    if ('false' == $paypal_active)
+    {
+      return false ;
+    }
+  }
+
+  return true;
 }
 ?>
