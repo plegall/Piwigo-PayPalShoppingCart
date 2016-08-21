@@ -22,23 +22,22 @@
 // +-----------------------------------------------------------------------+
 $lang['all albums'] = 'alle albums';
 $lang['Action'] = 'Actie';
-$lang['Add to cart'] = 'toevoegen aan winkelwagen';
-$lang['Append data'] = 'datum toegevoegd';
-$lang['Append photo size'] = 'Foto formaat';
+$lang['Add to cart'] = 'Toevoegen aan winkelwagen';
+$lang['Append data'] = 'Datum toegevoegd';
+$lang['Append photo size'] = 'Formaat foto ';
 $lang['Apply to albums'] = 'Toepassen op albums';
 $lang['Buy this picture'] = 'Koop deze foto';
 $lang['Currency'] = 'Valuta';
-$lang['Data appened'] = 'gegevens toegevoegd';
+$lang['Data appened'] = 'Gegevens toegevoegd';
 $lang['Data deleted'] = 'Datum verwijderd';
 $lang['Data updated'] = 'Datum bijgewerkt';
 $lang['Delete data'] = 'Verwijder gegevens';
 $lang['Fixed shipping cost'] = 'Vaste verzendkosten';
 $lang['PayPal Shopping Cart'] = 'Paypal winkelwagen';
 $lang['Price'] = 'Prijs';
-$lang['Shipping cost'] = 'Verzend kosten';
-$lang['Size'] = 'formaat';
+$lang['Shipping cost'] = 'Verzendkosten';
+$lang['Size'] = 'Formaat';
 $lang['Update data'] = 'Data bijwerken';
 $lang['View Shopping Cart'] = 'Bekijk winkelwagen';
 $lang['View my PayPal Shopping Cart'] = 'Bekijk mijn PayPal winkelwagen';
 $lang['a list of albums'] = 'albumlijst';
-?>
