@@ -121,7 +121,7 @@ jQuery(document).ready(function() {
 <input type="text" id="business" name="business" value="{$ppppp_business}">
 <br>
 <label for="mode">{'Service mode Paypal'|@translate}</label>
-<select id="mode" name="mode" onchange="submit()">
+<select id="mode" name="mode">
 {foreach from=$ppppp_array_modes item=mode_label key=mode_code}
 <option value="{$mode_code}"{if $ppppp_mode==$mode_code} selected="selected"{/if}>{$mode_label}</option>
 {/foreach}

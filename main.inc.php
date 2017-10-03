@@ -69,15 +69,14 @@ define('PPPPP_VERSION', 'auto');
 
 function ppppp_append_form($tpl_source, &$smarty)
 {
-  global $conf,$theme;
+  global $theme;
 
   $pattern = '#<.*\"infoTable\".*>#';
   $replacement = '
   <tr>
    <td class="label">{\'Buy this picture\'|@translate}</td>
    <td>
-    <form name="ppppp_form" target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post" onSubmit="javascript:pppppValid()">
-     <input type="hidden" name="url" value="{$ppppp_url}">
+    <form name="ppppp_form" target="paypal" action="https://{$ppppp_url}/cgi-bin/webscr" method="post" onSubmit="javascript:pppppValid()">
      <input type="hidden" name="add" value="1">
      <input type="hidden" name="cmd" value="_cart">
      <input type="hidden" name="business" value="{$ppppp_business}">
@@ -94,7 +93,7 @@ function ppppp_append_form($tpl_source, &$smarty)
     </form>
    </td>
    <td>
-    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+    <form target="paypal" action="https://{$ppppp_url}/cgi-bin/webscr" method="post">
      <input type="hidden" name="cmd" value="_cart">
      <input type="hidden" name="business" value="{$ppppp_business}">
      <input type="hidden" name="display" value="1">
@@ -165,6 +164,7 @@ function ppppp_picture_handler()
       'ppppp_currency' => $conf['PayPalShoppingCart']['currency'],
       //'ppppp_e_mail' => get_webmaster_mail_address(),
       'ppppp_business' => $conf['PayPalShoppingCart']['business'],
+      'ppppp_url' => $conf['PayPalShoppingCart']['url'],
      )
     );
 }
@@ -178,7 +178,7 @@ function ppppp_append_js($tpl_source, &$smarty){
  $pattern = '#{/foreach}#';  
  $replacement = '{/foreach}
  <li><a href="" title="'.l10n('View my PayPal Shopping Cart').'" onclick="document.forms[\'ppppp_form_view_cart\'].submit()">'.l10n('View Shopping Cart').'</a></li>
- <form name="ppppp_form_view_cart" target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+ <form name="ppppp_form_view_cart" target="paypal" action="https://{$ppppp_url}/cgi-bin/webscr" method="post">
      <input type="hidden" name="cmd" value="_cart">
      <input type="hidden" name="business" value="{$ppppp_business}">
      <input type="hidden" name="display" value="1">
@@ -192,6 +192,12 @@ function ppppp_index_handler(){
  global $template;
  $template->set_prefilter('menubar', 'ppppp_append_js');
  //$template->assign('ppppp_e_mail',get_webmaster_mail_address()); 
+ $template->assign(
+	array(
+		'ppppp_business' => $conf['PayPalShoppingCart']['business'],
+		'ppppp_url' => $conf['PayPalShoppingCart']['url'],
+	)
+ );
  }
 
 add_event_handler('loc_begin_index', 'ppppp_index_handler');
