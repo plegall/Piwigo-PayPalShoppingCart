@@ -77,6 +77,8 @@ function ppppp_append_form($tpl_source, &$smarty)
    <td class="label">{\'Buy this picture\'|@translate}</td>
    <td>
     <form name="ppppp_form" target="paypal" action="https://{$ppppp_url}/cgi-bin/webscr" method="post" onSubmit="javascript:pppppValid()">
+     <input type="hidden" name="cancel_return" value="{$ppppp_cancel}">
+     <input type="hidden" name="return" value="{$ppppp_return}">
      <input type="hidden" name="add" value="1">
      <input type="hidden" name="cmd" value="_cart">
      <input type="hidden" name="business" value="{$ppppp_business}">
@@ -147,6 +149,11 @@ function ppppp_picture_handler()
   {
     return;
   }
+  
+	if(!empty($_SERVER['HTTPS'])) $scheme = 'https'; else $scheme = 'http';
+	if(!empty($_SERVER['HTTP_HOST'])) $host = $_SERVER['HTTP_HOST'];
+	if(!empty($scheme) and !empty($host)) { $base = $scheme.'://'.$host; } 
+	unset($scheme,$host);
  
   $template->set_prefilter('picture', 'ppppp_append_form');
   load_language('plugin.lang', PPPPP_PATH);
@@ -162,11 +169,15 @@ function ppppp_picture_handler()
     array(
       'ppppp_fixed_shipping' => $conf['PayPalShoppingCart']['fixed_shipping'],
       'ppppp_currency' => $conf['PayPalShoppingCart']['currency'],
-      //'ppppp_e_mail' => get_webmaster_mail_address(),
       'ppppp_business' => $conf['PayPalShoppingCart']['business'],
       'ppppp_url' => $conf['PayPalShoppingCart']['url'],
+      'ppppp_cancel' => $base.$_SERVER['REQUEST_URI'],
+      'ppppp_return' => $base,
      )
     );
+    
+    unset($base);
+    
 }
 
 add_event_handler('loc_begin_picture', 'ppppp_picture_handler');
@@ -189,7 +200,7 @@ function ppppp_append_js($tpl_source, &$smarty){
  }
 
 function ppppp_index_handler(){
- global $template;
+ global $conf, $template;
  $template->set_prefilter('menubar', 'ppppp_append_js');
  //$template->assign('ppppp_e_mail',get_webmaster_mail_address()); 
  $template->assign(
