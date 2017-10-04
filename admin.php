@@ -213,11 +213,6 @@ SELECT id,name,uppercats,global_rank
 			}
 		}
 		
-		//if (!empty($_POST['mode']) 
-			//and isset($array_paypal_modes[ $_POST['mode'] ])
-			//and isset($array_paypal_urls[ $_POST['mode'] ])
-		//) {
-		
 		if (!empty($_POST['mode'])) {
 			
 			if (!isset($array_paypal_modes[ $_POST['mode'] ]) or
@@ -231,13 +226,6 @@ SELECT id,name,uppercats,global_rank
 			conf_update_param('PayPalShoppingCart', $conf['PayPalShoppingCart']);
 			$page['infos'][] = l10n('Your configuration settings are saved');
 		}
-		//else {
-			//$conf['PayPalShoppingCart']['mode'] = 'production';
-			//$conf['PayPalShoppingCart']['url'] = $array_paypal_urls['production'];
-			//conf_update_param('PayPalShoppingCart', $conf['PayPalShoppingCart']);
-		//}
-		var_dump($conf['PayPalShoppingCart']);
-		//$template->assign('ppppp_business', $conf['PayPalShoppingCart']['business']);
 		
 		$template->assign(
 			array(

@@ -53,6 +53,10 @@ Add sk_SK (by dodo)
 1.0.7   26/03/2011
 Add hu_HU language (Hungarian) thanks to samli
 
+04/11/2017
+Ajout onglet Paypal information utilisateur, mode
+Ajout de la gestion des urls cancel, return pour Paypal
+
 */
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
