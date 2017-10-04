@@ -100,6 +100,8 @@ function ppppp_append_form($tpl_source, &$smarty)
    </td>
    <td>
     <form target="paypal" action="https://{$ppppp_url}/cgi-bin/webscr" method="post">
+	 <input type="hidden" name="cancel_return" value="{$ppppp_cancel}">
+     <input type="hidden" name="return" value="{$ppppp_return}">
      <input type="hidden" name="cmd" value="_cart">
      <input type="hidden" name="business" value="{$ppppp_business}">
      <input type="hidden" name="display" value="1">
