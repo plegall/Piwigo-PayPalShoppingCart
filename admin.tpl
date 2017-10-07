@@ -28,11 +28,11 @@ jQuery(document).ready(function() {
 
 {if $tabsheet_selected=='currency'}
 <h3>{'Currency'|@translate}</h3>
-<form method=post>
+<form method="post">
 <fieldset>
 <legend>{'Currency'|@translate}</legend>
 <br>
-<select name=currency onchange=submit()>
+<select name="currency" onchange="submit()">
 {foreach from=$ppppp_array_currency item=currency_label key=currency_code}
 <option value="{$currency_code}"{if $ppppp_currency==$currency_code} selected{/if}>{$currency_label} ({$currency_code})</option>
 {/foreach}
@@ -45,7 +45,7 @@ jQuery(document).ready(function() {
 
 {elseif $tabsheet_selected=='albums'}
 <h3>{'Albums'|@translate}</h3>
-<form method=post>
+<form method="post">
 <fieldset>
   <legend>{'Apply to albums'|@translate}</legend>
   <p>
@@ -65,20 +65,20 @@ jQuery(document).ready(function() {
 
 {elseif $tabsheet_selected=='size'}
 <h3>{'Size'|@translate}</h3>
-<form method=post>
+<form method="post">
 <fieldset>
 <legend>{'Append photo size'|@translate}</legend>
 <br>
-{'Size'|@translate} <input type=text name=size>
-{'Price'|@translate} <input type=text name=price>
+{'Size'|@translate} <input type="text" name="size">
+{'Price'|@translate} <input type="text" name="price">
 <br>
 <br>
-<input type=submit value="{'Append data'|@translate}">
+<input type="submit" value="{'Append data'|@translate}">
 </fieldset>
 </form>
 <fieldset>
-<table class=table2>
-<tr class=throw>
+<table class="table2">
+<tr class="throw">
 <th>{'Size'|@translate}</th>
 <th>{'Price'|@translate}</th>
 <th>{'Action'|@translate}</th>
@@ -88,9 +88,9 @@ jQuery(document).ready(function() {
 <td>{$ppppp_row_size.size}</td>
 <td>{$ppppp_row_size.price}</td>
 <td>
-<form method=post>
-<input type=hidden name=delete value='{$ppppp_row_size.id}'}>
-<input type=submit value="{'Delete data'|@translate}">
+<form method="post">
+<input type="hidden" name="delete" value="{$ppppp_row_size.id}">
+<input type="submit" value="{'Delete data'|@translate}">
 </form>
 </td>
 </tr>
@@ -98,16 +98,37 @@ jQuery(document).ready(function() {
 </table>
 </fieldset>
 
-{else}
+{elseif $tabsheet_selected=='shipping'}
 <h3>{'Shipping cost'|@translate}</h3>
-<form method=post>
+<form method="post">
 <fieldset>
 <legend>{'Fixed shipping cost'|@translate}</legend>
 <br>
-<input type=text name=fixed_shipping value={$ppppp_fixed_shipping}>
+<input type="text" name="fixed_shipping" value="{$ppppp_fixed_shipping}">
 <br>
 <br>
-<input type=submit value="{'Update data'|@translate}">
+<input type="submit" value="{'Update data'|@translate}">
 </fieldset>
 </form>
+
+{elseif $tabsheet_selected=='userid'}
+<h3>{'Paypal identification'|@translate}</h3>
+<form method="post">
+<fieldset>
+<legend>{'Modify your Paypal information'|@translate}</legend>
+<br>
+<label for="business">{'Write your userid'|@translate}</label>
+<input type="text" id="business" name="business" value="{$ppppp_business}">
+<br>
+<label for="mode">{'Service mode Paypal'|@translate}</label>
+<select id="mode" name="mode">
+{foreach from=$ppppp_array_modes item=mode_label key=mode_code}
+<option value="{$mode_code}"{if $ppppp_mode==$mode_code} selected="selected"{/if}>{$mode_label}</option>
+{/foreach}
+</select>
+<br>
+<input type="submit" value="{'Update data'|@translate}">
+</fieldset>
+</form>
+
 {/if}
