@@ -193,6 +193,8 @@ SELECT id,name,uppercats,global_rank
 	
 	case 'userid':
 	
+		# 'ppppp_e_mail' => get_webmaster_mail_address(),
+	
 		$array_paypal_modes = array (
 			'production'=>'Production',
 			'sandbox'=>'Sandbox',
@@ -208,7 +210,9 @@ SELECT id,name,uppercats,global_rank
 			$page['infos'][] = l10n('Your configuration settings are saved');
 		}
 		else {
-			if(empty($conf['PayPalShoppingCart']['url'])) {
+			if(empty($conf['PayPalShoppingCart']['business'])) {
+				$conf['PayPalShoppingCart']['business'] = get_webmaster_mail_address();
+				conf_update_param('PayPalShoppingCart', $conf['PayPalShoppingCart']);
 				$page['messages'][] = l10n('Please, configure your userid!');
 			}
 		}
