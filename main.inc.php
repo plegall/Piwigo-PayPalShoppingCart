@@ -6,6 +6,7 @@ Description: Append PayPal Shopping Cart on Piwigo to sell photos
 Plugin URI: http://piwigo.org/ext/extension_view.php?eid=499
 Author: queguineur.fr
 Author URI: http://www.queguineur.fr
+Has Settings: webmaster
 */
 /*
   Plugin Panier PayPal Pour Piwigo
@@ -67,7 +68,7 @@ define('PPPPP_PATH' , PHPWG_PLUGINS_PATH . basename(dirname(__FILE__)) . '/');
 define('PPPPP_SIZE_TABLE', $prefixeTable.'ppppp_size');
 define('PPPPP_VERSION', 'auto');
 
-function ppppp_append_form($tpl_source, &$smarty)
+function ppppp_append_form($tpl_source)
 {
   global $theme;
 
@@ -168,7 +169,7 @@ function ppppp_picture_handler()
 
 add_event_handler('loc_begin_picture', 'ppppp_picture_handler');
 
-function ppppp_append_js($tpl_source, &$smarty){
+function ppppp_append_js($tpl_source){
  load_language('plugin.lang', PPPPP_PATH);
  if(strstr($tpl_source,"{'Menu'|@translate}")==false)
   return $tpl_source;
@@ -192,16 +193,6 @@ function ppppp_index_handler(){
  }
 
 add_event_handler('loc_begin_index', 'ppppp_index_handler');
-
-function ppppp_admin_menu($menu){
- load_language('plugin.lang', PPPPP_PATH);
- array_push($menu, array(
-  'NAME' => l10n('PayPal Shopping Cart'),
-  'URL' => get_admin_plugin_menu_link(PPPPP_PATH . 'admin.php')));
- return $menu;
- }
-
-add_event_handler('get_admin_plugin_menu_links', 'ppppp_admin_menu');
 
 add_event_handler('init', 'ppppp_init');
 /**
