@@ -19,19 +19,19 @@
 */
 $lang['Action'] = 'Akcia';
 $lang['Add to cart'] = 'Pridaj do košíka';
-$lang['Append photo size'] = 'Pridať veľkosť fotky';
+$lang['Append photo size'] = 'Pridať rozmer fotky';
 $lang['Append data'] = 'Pridať údaje';
 $lang['Buy this picture'] = 'Kúpiť fotku';
 $lang['Currency'] = 'Mena';
 $lang['Data appened'] = 'Údaje pridané';
 $lang['Data deleted'] = 'Údaje vymazané';
 $lang['Data updated'] = 'Údaje aktualizované';
-$lang['Delete data'] = 'Vymazané údaje';
-$lang['Fixed shipping cost'] = 'Pevná prepravná cena';
-$lang['PayPal Shopping Cart'] = 'PayPal nákupná košík';
+$lang['Delete data'] = 'Vymazať údaje';
+$lang['Fixed shipping cost'] = 'Jednotné poštovné';
+$lang['PayPal Shopping Cart'] = 'PayPal nákupný košík';
 $lang['Price'] = 'Cena';
-$lang['Shipping cost'] = 'Cena prepravy';
-$lang['Size'] = 'Veľkosť';
+$lang['Shipping cost'] = 'Poštovné';
+$lang['Size'] = 'Rozmery';
 $lang['Update data'] = 'Aktualizovať údaje';
 $lang['View Shopping Cart'] = 'Ukázať nákupný košík';
 $lang['View my PayPal Shopping Cart'] = 'Ukázať môj nákupný košík';
