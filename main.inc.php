@@ -54,6 +54,10 @@ Add sk_SK (by dodo)
 1.0.7   26/03/2011
 Add hu_HU language (Hungarian) thanks to samli
 
+04/11/2017
+Ajout onglet Paypal information utilisateur, mode
+Ajout de la gestion des urls cancel, return pour Paypal
+
 */
 if (!defined('PHPWG_ROOT_PATH')) die('Hacking attempt!');
 
@@ -77,10 +81,12 @@ function ppppp_append_form($tpl_source)
   <tr>
    <td class="label">{\'Buy this picture\'|@translate}</td>
    <td>
-    <form name="ppppp_form" target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post" onSubmit="javascript:pppppValid()">
+    <form name="ppppp_form" target="paypal" action="https://{$ppppp_url}/cgi-bin/webscr" method="post" onSubmit="javascript:pppppValid()">
+     <input type="hidden" name="cancel_return" value="{$ppppp_cancel}">
+     <input type="hidden" name="return" value="{$ppppp_return}">
      <input type="hidden" name="add" value="1">
      <input type="hidden" name="cmd" value="_cart">
-     <input type="hidden" name="business" value="{$ppppp_e_mail}">
+     <input type="hidden" name="business" value="{$ppppp_business}">
      <input type="hidden" name="item_name">
      <input type="hidden" name="no_shipping" value="2"><!-- shipping address mandatory -->
 	 <input type="hidden" name="handling_cart" value="{$ppppp_fixed_shipping}"> 
@@ -89,13 +95,16 @@ function ppppp_append_form($tpl_source)
 	  {foreach from=$ppppp_array_size item=ppppp_row_size}
       <option value="{$ppppp_row_size.price}">{$ppppp_row_size.size} : {$ppppp_row_size.price} {$ppppp_currency}</option>
 	  {/foreach}
+	 </select>
      <input type="submit" value="{\'Add to cart\'|@translate}">
     </form>
    </td>
    <td>
-    <form target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+    <form target="paypal" action="https://{$ppppp_url}/cgi-bin/webscr" method="post">
+	 <input type="hidden" name="cancel_return" value="{$ppppp_cancel}">
+     <input type="hidden" name="return" value="{$ppppp_return}">
      <input type="hidden" name="cmd" value="_cart">
-     <input type="hidden" name="business" value="{$ppppp_e_mail}">
+     <input type="hidden" name="business" value="{$ppppp_business}">
      <input type="hidden" name="display" value="1">
      <input type="hidden" name="no_shipping" value="2">
      <input type=submit value="{\'View Shopping Cart\'|@translate}">
@@ -147,6 +156,11 @@ function ppppp_picture_handler()
   {
     return;
   }
+  
+	if(!empty($_SERVER['HTTPS'])) $scheme = 'https'; else $scheme = 'http';
+	if(!empty($_SERVER['HTTP_HOST'])) $host = $_SERVER['HTTP_HOST'];
+	if(!empty($scheme) and !empty($host)) { $base = $scheme.'://'.$host; } 
+	unset($scheme,$host);
  
   $template->set_prefilter('picture', 'ppppp_append_form');
   load_language('plugin.lang', PPPPP_PATH);
@@ -162,9 +176,15 @@ function ppppp_picture_handler()
     array(
       'ppppp_fixed_shipping' => $conf['PayPalShoppingCart']['fixed_shipping'],
       'ppppp_currency' => $conf['PayPalShoppingCart']['currency'],
-      'ppppp_e_mail' => get_webmaster_mail_address(),
+      'ppppp_business' => $conf['PayPalShoppingCart']['business'],
+      'ppppp_url' => $conf['PayPalShoppingCart']['url'],
+      'ppppp_cancel' => $base.$_SERVER['REQUEST_URI'],
+      'ppppp_return' => $base,
      )
     );
+    
+    unset($base);
+    
 }
 
 add_event_handler('loc_begin_picture', 'ppppp_picture_handler');
@@ -176,9 +196,9 @@ function ppppp_append_js($tpl_source){
  $pattern = '#{/foreach}#';  
  $replacement = '{/foreach}
  <li><a href="" title="'.l10n('View my PayPal Shopping Cart').'" onclick="document.forms[\'ppppp_form_view_cart\'].submit()">'.l10n('View Shopping Cart').'</a></li>
- <form name="ppppp_form_view_cart" target="paypal" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+ <form name="ppppp_form_view_cart" target="paypal" action="https://{$ppppp_url}/cgi-bin/webscr" method="post">
      <input type="hidden" name="cmd" value="_cart">
-     <input type="hidden" name="business" value="{$ppppp_e_mail}">
+     <input type="hidden" name="business" value="{$ppppp_business}">
      <input type="hidden" name="display" value="1">
      <input type="hidden" name="no_shipping" value="2">
   </form>
@@ -187,9 +207,15 @@ function ppppp_append_js($tpl_source){
  }
 
 function ppppp_index_handler(){
- global $template;
+ global $conf, $template;
  $template->set_prefilter('menubar', 'ppppp_append_js');
- $template->assign('ppppp_e_mail',get_webmaster_mail_address()); 
+ //$template->assign('ppppp_e_mail',get_webmaster_mail_address()); 
+ $template->assign(
+	array(
+		'ppppp_business' => $conf['PayPalShoppingCart']['business'],
+		'ppppp_url' => $conf['PayPalShoppingCart']['url'],
+	)
+ );
  }
 
 add_event_handler('loc_begin_index', 'ppppp_index_handler');
