@@ -20,29 +20,27 @@
 // | Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, |
 // | USA.                                                                  |
 // +-----------------------------------------------------------------------+
-$lang['Fixed shipping cost'] = '
-هزینه حمل و نقل ثابت است';
-$lang['PayPal Shopping Cart'] = '
+$lang['Fixed shipping cost'] = 'هزینه حمل و نقل ثابت است';
+$lang['PayPal Shopping Cart'] = 'پی پال سبد خرید';
 پی پال سبد خرید';
-$lang['Price'] = '
+$lang['Price'] = 'قیمت';
 قیمت';
 $lang['Shipping cost'] = 'هزینه حمل و نقل';
 $lang['Update data'] = 'بروز  رسانی اطلاعات';
 $lang['View Shopping Cart'] = 'دیدن سبد خرید';
-$lang['View my PayPal Shopping Cart'] = '
+$lang['View my PayPal Shopping Cart'] = 'دیدن  پی پال سبد من خرید';
 دیدن  پی پال سبد من خرید';
 $lang['a list of albums'] = 'لیست  البوم ها ';
 $lang['Data appened'] = 'افزودن اطلاعات';
 $lang['Data deleted'] = 'اطلاعات حذف شد';
 $lang['Data updated'] = 'بروز رسانی اطلاعات';
 $lang['Delete data'] = 'حذف اطلاعات';
-$lang['Size'] = 'سایز ';
+$lang['Size'] = 'اندازه';
 $lang['Action'] = 'فعال';
 $lang['Add to cart'] = 'افزودن به سبد ';
 $lang['Append data'] = 'تاریخ پوستن';
-$lang['Append photo size'] = 'سایزعکس پیوست';
+$lang['Append photo size'] = 'اندازه عکس اضافه کن';
 $lang['Apply to albums'] = 'متصل کردن به البوم';
 $lang['Buy this picture'] = 'خریدن این عکس ';
 $lang['Currency'] = 'جاری';
-$lang['all albums'] = 'کل البوم ';
-?>
+$lang['all albums'] = 'همه البوم ';
