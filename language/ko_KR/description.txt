@@ -1,0 +1,1 @@
+Piwigo에 PayPal Shopping Cart를 추가하여 사진 판매하기
