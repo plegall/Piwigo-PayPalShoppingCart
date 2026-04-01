@@ -39,7 +39,10 @@ $tabsheet->add('size',
                $my_base_url.'&amp;tab=size');
 $tabsheet->add('shipping',
                l10n('Shipping cost'),
-               $my_base_url.'&amp;tab=shipping');			   
+               $my_base_url.'&amp;tab=shipping');		
+$tabsheet->add('userid',
+				l10n('Paypal user'),
+				$my_base_url.'&amp;tab=userid');
 $tabsheet->select($page['tab']);
 $tabsheet->assign();
 
@@ -175,9 +178,9 @@ SELECT id,name,uppercats,global_rank
     
     break;
 
-  case 'shipping':
+	case 'shipping':
     
-    if (isset($_POST['fixed_shipping'])and is_numeric($_POST['fixed_shipping']))
+    if (isset($_POST['fixed_shipping']) and is_numeric($_POST['fixed_shipping']))
     {
       $conf['PayPalShoppingCart']['fixed_shipping'] = $_POST['fixed_shipping'];
       conf_update_param('PayPalShoppingCart', $conf['PayPalShoppingCart']);
@@ -187,6 +190,58 @@ SELECT id,name,uppercats,global_rank
     
     $template->assign('ppppp_fixed_shipping', $conf['PayPalShoppingCart']['fixed_shipping']);
     break;
+	
+	case 'userid':
+	
+		# 'ppppp_e_mail' => get_webmaster_mail_address(),
+	
+		$array_paypal_modes = array (
+			'production'=>'Production',
+			'sandbox'=>'Sandbox',
+		);
+		$array_paypal_urls = array (
+			'production'=>'www.paypal.com',
+			'sandbox'=>'www.sandbox.paypal.com',
+		);
+	
+		if (!empty($_POST['business'])) {
+			$conf['PayPalShoppingCart']['business'] = $_POST['business'];
+			conf_update_param('PayPalShoppingCart', $conf['PayPalShoppingCart']);
+			$page['infos'][] = l10n('Your configuration settings are saved');
+		}
+		else {
+			if(empty($conf['PayPalShoppingCart']['business'])) {
+				$conf['PayPalShoppingCart']['business'] = get_webmaster_mail_address();
+				conf_update_param('PayPalShoppingCart', $conf['PayPalShoppingCart']);
+				$page['messages'][] = l10n('Please, configure your userid!');
+			}
+		}
+		
+		if (!empty($_POST['mode'])) {
+			
+			if (!isset($array_paypal_modes[ $_POST['mode'] ]) or
+				!isset($array_paypal_urls[ $_POST['mode'] ]))
+			{
+				$_POST['mode'] = 'production';
+			}
+			
+			$conf['PayPalShoppingCart']['mode'] = $_POST['mode'];
+			$conf['PayPalShoppingCart']['url'] = $array_paypal_urls[ $_POST['mode'] ];
+			conf_update_param('PayPalShoppingCart', $conf['PayPalShoppingCart']);
+			$page['infos'][] = l10n('Your configuration settings are saved');
+		}
+		
+		$template->assign(
+			array(
+				'ppppp_array_modes' => $array_paypal_modes,
+				//'ppppp_array_urls' => $array_paypal_urls,
+				'ppppp_business' => $conf['PayPalShoppingCart']['business'],
+				'ppppp_mode' => $conf['PayPalShoppingCart']['mode'],
+				'ppppp_url' => $conf['PayPalShoppingCart']['url'],
+			)
+		);
+		
+	break;
 }
 
 $template->set_filenames(array('plugin_admin_content' => dirname(__FILE__) . '/admin.tpl')); 
